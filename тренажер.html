@@ -1,0 +1,1096 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ОГЭ Информатика — Тренажёр</title>
+<style>
+:root{
+  --bg:#eef2f9; --card:#fff; --text:#111827; --muted:#6b7280; --border:#e5e7eb;
+  --accent:#4f6ef7; --accent-2:#7c3aed; --ok:#16a34a; --ok-bg:#f0fdf4;
+  --err:#dc2626; --err-bg:#fef2f2; --radius:18px;
+  --shadow:0 4px 20px rgba(17,24,39,.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+  color:var(--text); line-height:1.6; min-height:100vh; padding-bottom:60px;
+  background:
+    radial-gradient(1200px 600px at 8% -10%, #dbe4ff 0%, transparent 60%),
+    radial-gradient(1000px 500px at 100% 0%, #f3e8ff 0%, transparent 55%),
+    var(--bg);
+  background-attachment:fixed;
+}
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:rgba(255,255,255,.85);
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+}
+.topbar-inner{
+  max-width:1080px;margin:0 auto;padding:12px 20px;
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+}
+.logo{font-weight:800;font-size:17px;display:flex;align-items:center;gap:8px}
+.logo span{
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.nav{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+.nav button{
+  border:none;background:transparent;color:var(--muted);
+  font-size:14px;font-weight:600;padding:8px 14px;border-radius:10px;
+  cursor:pointer;transition:.18s;font-family:inherit;
+}
+.nav button:hover{background:#eef2ff;color:var(--accent)}
+.nav button.active{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff}
+.wrap{max-width:1080px;margin:0 auto;padding:28px 20px}
+.hero{
+  background:linear-gradient(135deg,#4f6ef7,#7c3aed);
+  border-radius:26px;padding:40px 36px;color:#fff;
+  position:relative;overflow:hidden;margin-bottom:28px;
+  box-shadow:0 18px 45px rgba(79,110,247,.28);
+}
+.hero::after{
+  content:'';position:absolute;right:-70px;top:-70px;width:260px;height:260px;
+  background:rgba(255,255,255,.13);border-radius:50%;
+}
+.hero h1{font-size:30px;line-height:1.25;margin-bottom:10px;position:relative}
+.hero p{opacity:.9;font-size:15px;max-width:560px;margin-bottom:22px;position:relative}
+.hero-stats{display:flex;gap:26px;margin-top:26px;position:relative;flex-wrap:wrap}
+.hero-stat b{display:block;font-size:24px;line-height:1.1}
+.hero-stat span{font-size:13px;opacity:.82}
+.primary{
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  color:#fff;border:none;padding:13px 26px;border-radius:12px;
+  font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;
+  transition:.2s;box-shadow:0 6px 18px rgba(79,110,247,.3);
+}
+.primary:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(79,110,247,.42)}
+.primary.light{background:#fff;color:var(--accent)}
+.ghost{
+  background:transparent;border:1px solid var(--border);color:var(--muted);
+  padding:9px 16px;border-radius:10px;font-size:14px;font-weight:600;
+  cursor:pointer;font-family:inherit;
+}
+.ghost:hover{border-color:var(--accent);color:var(--accent);background:#fff}
+.section-title{font-size:19px;font-weight:800;margin:34px 0 14px;display:flex;gap:9px;align-items:center}
+.section-title small{font-weight:500;color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:14px}
+.topic-card{
+  display:flex;flex-direction:column;gap:7px;align-items:flex-start;
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:18px;cursor:pointer;text-align:left;transition:.2s;font-family:inherit;
+  color:var(--text);box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.topic-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c);transition:.25s}
+.topic-card:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(17,24,39,.1)}
+.topic-icon{font-size:22px}
+.topic-name{font-weight:700;font-size:14.5px}
+.topic-meta{font-size:12.5px;color:var(--muted)}
+.topic-bar{width:100%;height:5px;background:#eef1f7;border-radius:99px;overflow:hidden;margin-top:4px}
+.topic-bar i{display:block;height:100%;background:var(--c);border-radius:99px}
+.card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:26px;box-shadow:var(--shadow);
+}
+.quiz-head{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.quiz-progress{margin-left:auto;font-size:14px;font-weight:700;color:var(--muted)}
+.exam-bar{
+  display:flex;align-items:center;gap:14px;margin-bottom:18px;
+  background:#fff;border:1px solid var(--border);border-radius:14px;
+  padding:12px 18px;box-shadow:var(--shadow);
+}
+.timer{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--accent)}
+.timer.warn{color:var(--err);animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.45}}
+.exam-label{margin-left:auto;font-size:13.5px;color:var(--muted);font-weight:600}
+.q-badge{
+  display:inline-flex;gap:7px;font-size:12.5px;font-weight:700;color:var(--c);
+  background:color-mix(in srgb, var(--c) 11%, #fff);
+  padding:5px 12px;border-radius:99px;margin-bottom:16px;
+}
+.q-text{font-size:16.5px;line-height:1.75;margin-bottom:22px;white-space:pre-line}
+.answer-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.answer-input{
+  flex:1;min-width:200px;padding:13px 16px;font-size:16px;
+  border:2px solid var(--border);border-radius:12px;font-family:inherit;
+  outline:none;transition:.18s;background:#fbfcfe;color:var(--text);
+}
+.answer-input:focus{border-color:var(--accent);background:#fff;box-shadow:0 0 0 4px rgba(79,110,247,.12)}
+.answer-input:disabled{opacity:.65}
+.feedback{margin-top:20px;border-radius:14px;padding:18px 20px;border:1px solid}
+.feedback.ok{background:var(--ok-bg);border-color:#bbf7d0}
+.feedback.err{background:var(--err-bg);border-color:#fecaca}
+.fb-title{font-weight:800;font-size:16px;margin-bottom:8px}
+.feedback.ok .fb-title{color:var(--ok)}
+.feedback.err .fb-title{color:var(--err)}
+.fb-line{font-size:14.5px;margin-bottom:5px}
+.fb-sol{margin-top:12px;padding-top:12px;border-top:1px dashed rgba(0,0,0,.1);font-size:14.5px;color:#374151}
+.actions{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap}
+.result-card{text-align:center;padding:40px 26px}
+.result-score{
+  font-size:60px;font-weight:900;line-height:1;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:8px;
+}
+.result-sub{color:var(--muted);font-size:15px;margin-bottom:22px}
+.mark{display:inline-flex;flex-direction:column;align-items:center;padding:16px 34px;border-radius:16px;font-weight:800;margin-bottom:24px}
+.mark b{font-size:34px;line-height:1}
+.mark span{font-size:12px;font-weight:600;opacity:.8;text-transform:uppercase;letter-spacing:1px}
+.mark.m5{background:#dcfce7;color:#15803d}
+.mark.m4{background:#dbeafe;color:#1d4ed8}
+.mark.m3{background:#fef3c7;color:#b45309}
+.mark.m2{background:#fee2e2;color:#b91c1c}
+.review{display:flex;flex-direction:column;gap:8px;margin:24px 0 6px;text-align:left}
+.review-item{display:flex;gap:10px;font-size:14px;padding:11px 14px;border-radius:11px;background:#f8fafc;border:1px solid var(--border)}
+.review-item .rv-txt{flex:1;color:#374151}
+.review-item .rv-ans{font-size:12.5px;color:var(--muted);margin-top:3px;display:block}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:8px}
+.stat-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);text-align:center}
+.stat-box b{display:block;font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2}
+.stat-box span{font-size:12.5px;color:var(--muted);font-weight:600}
+.stat-rows{display:flex;flex-direction:column;gap:10px}
+.stat-row{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:13px 18px;box-shadow:var(--shadow)}
+.stat-row .sr-icon{font-size:18px}
+.stat-row .sr-name{font-size:14px;font-weight:600;min-width:170px}
+.stat-row .sr-bar{flex:1;height:8px;background:#eef1f7;border-radius:99px;overflow:hidden;min-width:60px}
+.stat-row .sr-bar i{display:block;height:100%;border-radius:99px}
+.stat-row .sr-num{font-size:13px;font-weight:700;color:var(--muted);white-space:nowrap}
+@media(max-width:620px){
+  .hero{padding:30px 22px;border-radius:20px}
+  .hero h1{font-size:23px}
+  .wrap{padding:20px 14px}
+  .card{padding:20px 17px}
+  .q-text{font-size:15.5px}
+  .stat-row .sr-name{min-width:auto;font-size:13px}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="logo">💻 <span>ОГЭ Информатика</span></div>
+    <nav class="nav">
+      <button data-page="home" class="active">Главная</button>
+      <button data-page="exam">Пробный вариант</button>
+      <button data-page="stats">Статистика</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="app"></main>
+
+<script>
+/* =========================================================
+   ТЕМЫ
+   ========================================================= */
+const TOPICS = {
+  bits:    {name:'Единицы информации',  icon:'📦', color:'#6366f1'},
+  coding:  {name:'Кодирование',         icon:'🔐', color:'#8b5cf6'},
+  logic:   {name:'Логика',              icon:'🧠', color:'#ec4899'},
+  files:   {name:'Файлы и маски',       icon:'📁', color:'#f59e0b'},
+  algo:    {name:'Исполнители',         icon:'🤖', color:'#10b981'},
+  program: {name:'Анализ программ',     icon:'⌨️', color:'#06b6d4'},
+  net:     {name:'Сети и IP',           icon:'🌐', color:'#3b82f6'},
+  search:  {name:'Поисковые запросы',   icon:'🔍', color:'#ef4444'},
+  graphs:  {name:'Графы',               icon:'🕸️', color:'#14b8a6'},
+  numsys:  {name:'Системы счисления',   icon:'🔢', color:'#a855f7'},
+  sheets:  {name:'Электронные таблицы', icon:'📊', color:'#f97316'},
+  speed:   {name:'Передача данных',     icon:'⚡', color:'#eab308'}
+};
+
+/* =========================================================
+   УТИЛИТЫ ДЛЯ ГЕНЕРАТОРОВ
+   ========================================================= */
+const rnd = (a,b) => Math.floor(Math.random()*(b-a+1))+a;
+const pick = arr => arr[Math.floor(Math.random()*arr.length)];
+const shuffle = a => { for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+
+function toBin(n){ return n.toString(2); }
+function toHex(n){ return n.toString(16).toUpperCase(); }
+
+/* =========================================================
+   ГЕНЕРАТОРЫ ЗАДАНИЙ — по 9 штук на каждую тему
+   (при каждом запуске — новые числа)
+   ========================================================= */
+
+/* ---------- BITS ---------- */
+const GEN_bits = [
+  () => {
+    const p=rnd(4,20), l=rnd(20,60), c=rnd(30,80);
+    const total=p*l*c;
+    const kb=total/1024;
+    return {
+      q:`Статья содержит ${p} страниц, на каждой ${l} строк, в каждой строке ${c} символов. Каждый символ кодируется 8 битами. Определите информационный объём статьи в Кбайтах (ответ округлите до целого, если нужно).`,
+      a:String(Math.round(kb)),
+      s:`${p} · ${l} · ${c} = ${total} символов. ${total} · 8 = ${total*8} бит = ${total} байт = ${kb.toFixed(2)} Кбайт ≈ ${Math.round(kb)} Кбайт.`
+    };
+  },
+  () => {
+    const kb=rnd(1,8)*2;
+    return { q:`Объём сообщения ${kb} Кбайта. Сколько это бит?`, a:String(kb*1024*8), s:`${kb} · 1024 · 8 = ${kb*1024*8} бит.` };
+  },
+  () => {
+    const kb=pick([1.5,2,2.5,3,4]);
+    const syms=kb*1024*8/rnd(2,8);
+    const bits=Math.round(kb*1024*8/syms);
+    const power=Math.pow(2,bits);
+    return { q:`Сообщение объёмом ${kb} Кбайта содержит ${syms} символов. Какова мощность алфавита?`, a:String(power), s:`${kb} Кбайт = ${kb*1024} байт = ${kb*1024*8} бит. ${kb*1024*8} : ${syms} = ${bits} бит на символ. Мощность = 2^${bits} = ${power}.` };
+  },
+  () => {
+    const p=rnd(2,8);
+    const bits=Math.pow(2,p);
+    return { q:`Сколько Кбайт информации содержит сообщение объёмом 2^${p*2} бит?`, a:String(Math.pow(2,p*2)/8/1024), s:`2^${p*2} бит = 2^${p*2-3} байт = 2^${p*2-13} Кбайт = ${Math.pow(2,p*2)/8/1024}.` };
+  },
+  () => {
+    const text=pick(['Мой дядя самых честных правил','Я помню чудное мгновенье','Мороз и солнце день чудесный']);
+    const len=text.length;
+    const bytes=len*2;
+    return { q:`В кодировке Unicode каждый символ — 16 бит. Сколько байт занимает фраза «${text}» (с пробелами)?`, a:String(bytes), s:`${len} символов · 16 бит = ${len*16} бит = ${bytes} байт.` };
+  },
+  () => {
+    const digits=pick([10,12,14,16]);
+    const letters=pick([10,12,14,16,18]);
+    const total=digits+letters;
+    let bits=1; while(Math.pow(2,bits)<total) bits++;
+    const len=rnd(5,8);
+    const bytesPerNum=Math.ceil(len*bits/8);
+    const count=pick([10,20,30,40]);
+    return { q:`Автомобильный номер длиной ${len} символов составляется из ${digits} цифр и ${letters} букв. Каждый символ — минимальное число бит, номер — минимальное целое число байт. Сколько байт нужно для ${count} номеров?`, a:String(bytesPerNum*count), s:`Мощность алфавита ${total} → ${bits} бит/символ. Номер: ${len}·${bits} = ${len*bits} бит → ${bytesPerNum} байт. ${count}·${bytesPerNum} = ${bytesPerNum*count} байт.` };
+  },
+  () => {
+    const gb=pick([1,2,4,8,16]);
+    return { q:`Сколько Мбайт в ${gb} Гбайт?`, a:String(gb*1024), s:`${gb} · 1024 = ${gb*1024} Мбайт.` };
+  },
+  () => {
+    const n=rnd(50,300);
+    const bits=Math.ceil(Math.log2(n));
+    return { q:`В алфавите ${n} символов. Сколько бит нужно на 1 символ?`, a:String(bits), s:`2^${bits-1} < ${n} ≤ 2^${bits} → ${bits} бит.` };
+  },
+  () => {
+    const baits=rnd(2,10);
+    return { q:`Сколько байт в ${baits} Кбит? (1 Кбит = 1024 бит)`, a:String(baits*1024/8), s:`${baits} Кбит = ${baits*1024} бит = ${baits*1024/8} байт.` };
+  }
+];
+
+/* ---------- CODING ---------- */
+const GEN_coding = [
+  () => {
+    const words=['СТОЛ','КОТ','ДОМ','ЛЕС','СОН','МЕЛ','СЫР','БОР'];
+    const w=pick(words);
+    const abc='АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ';
+    const nums=[...w].map(ch=>abc.indexOf(ch)+1).join(' ');
+    return { q:`Буквы заменены их номерами в алфавите (А=1, Б=2, …). Получилось: ${nums}. Расшифруйте слово.`, a:w, s:`Числа → буквы: ${nums} → ${w}.` };
+  },
+  () => {
+    const n=rnd(4,7);
+    return { q:`Сколько различных последовательностей из символов «а» и «б» длиной ровно ${n}?`, a:String(Math.pow(2,n)), s:`2^${n} = ${Math.pow(2,n)}.` };
+  },
+  () => {
+    const code=pick([
+      {A:'01',B:'100',C:'101',D:'11',msg:'0110111',dec:'АВГ'},
+      {A:'0',B:'10',C:'110',D:'111',msg:'0110111',dec:'АВГ'},
+      {A:'00',B:'01',C:'10',D:'11',msg:'11010001',dec:'ГВБА'}
+    ]);
+    return { q:`Коды: А — ${code.A}, Б — ${code.B}, В — ${code.C}, Г — ${code.D}. Расшифруйте сообщение ${code.msg}.`, a:code.dec, s:`Разбиваем на коды: ${code.msg} → ${code.dec}.` };
+  },
+  () => {
+    const n=rnd(4,8);
+    return { q:`Сколько различных последовательностей из 3 символов можно составить из алфавита мощностью ${n}?`, a:String(Math.pow(n,3)), s:`${n}^3 = ${Math.pow(n,3)}.` };
+  },
+  () => {
+    const shift=rnd(1,3);
+    const words=['КОТ','ДОМ','ЛЕС','СОН'];
+    const w=pick(words);
+    const abc='АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ';
+    const enc=[...w].map(ch=>abc[(abc.indexOf(ch)+shift)%33]).join('');
+    return { q:`Слово зашифровано сдвигом на ${shift} буквы вперёд по алфавиту. Получилось «${enc}». Расшифруйте.`, a:w, s:`Сдвигаем назад на ${shift}: ${enc} → ${w}.` };
+  },
+  () => {
+    const bits=rnd(2,4);
+    return { q:`Сколько различных символов можно закодировать ${bits} битами?`, a:String(Math.pow(2,bits)), s:`2^${bits} = ${Math.pow(2,bits)}.` };
+  },
+  () => {
+    const n=rnd(5,20);
+    const bits=Math.ceil(Math.log2(n));
+    return { q:`В языке ${n} букв. Сколько бит нужно на одну букву?`, a:String(bits), s:`2^${bits-1} < ${n} ≤ 2^${bits} → ${bits} бит.` };
+  },
+  () => {
+    const a=pick(['А','Б','В','Г']);
+    const codes={А:'00',Б:'01',В:'10',Г:'11'};
+    const msg=pick(['АБВГ','ГВАБ','БВГА','ВАБГ']);
+    const enc=[...msg].map(ch=>codes[ch]).join('');
+    const bits=msg.length*2;
+    return { q:`Коды: А — 00, Б — 01, В — 10, Г — 11. Слово «${msg}» закодировано. Сколько бит оно содержит?`, a:String(bits), s:`${msg.length} букв · 2 бита = ${bits} бит.` };
+  },
+  () => {
+    const words=['МАМА','ПАПА','БАБА'];
+    const w=pick(words);
+    const codes={А:'0',Б:'10',М:'110',П:'111'};
+    const enc=[...w].map(ch=>codes[ch]).join('');
+    return { q:`Коды: А — 0, Б — 10, М — 110, П — 111. Расшифруйте: ${enc}.`, a:w, s:`Разбиваем: ${enc} → ${w}.` };
+  }
+];
+
+/* ---------- LOGIC ---------- */
+const GEN_logic = [
+  () => {
+    const n=rnd(2,8);
+    const m=n+rnd(2,6);
+    const ans=rnd(n+1,m-1);
+    return { q:`Сколько целых X удовлетворяют: (X > ${n}) И (X < ${m})?`, a:String(m-n-1), s:`X = ${n+1}, …, ${m-1} → ${m-n-1} чисел.` };
+  },
+  () => {
+    const n=rnd(3,9);
+    const variants=[n,n+1,n+2,n+3].sort(()=>Math.random()-.5);
+    const correct=variants.findIndex(v=>v%2===0&&v<=n+1);
+    return { q:`Для какого X истинно: (X чётное) И НЕ (X > ${n+1})?\n1) ${variants[0]}\n2) ${variants[1]}\n3) ${variants[2]}\n4) ${variants[3]}`, a:String(correct+1), s:`Нужно: X чётное и X ≤ ${n+1}. Подходит ${variants[correct]}.` };
+  },
+  () => {
+    const n=rnd(3,8);
+    return { q:`Для какого X истинно: НЕ (X > ${n}) И (X > ${n-3})?\n1) ${n-4}\n2) ${n-1}\n3) ${n+1}\n4) ${n+2}`, a:'2', s:`X ≤ ${n} и X > ${n-3} → ${n-3} < X ≤ ${n}. Подходит ${n-1}.` };
+  },
+  () => {
+    const n=rnd(4,10);
+    return { q:`Сколько целых X: (X ≥ ${n}) И (X ≤ ${n+5})?`, a:'6', s:`${n}, ${n+1}, …, ${n+5} → 6 чисел.` };
+  },
+  () => {
+    const a=pick([2,3,4,5]), b=a+rnd(2,5);
+    return { q:`Для какого X ложно: НЕ (X > ${a}) ИЛИ (X > ${b})?\n1) ${a-1}\n2) ${b+1}\n3) ${b+2}\n4) ${b+3}`, a:'1', s:`Ложно, когда оба слагаемых ложны: X > ${a} и X ≤ ${b}. Из вариантов подходит только ${a-1}? Нет — проверяем: только вариант 1 даёт X ≤ ${a}.` };
+  },
+  () => {
+    const n=rnd(5,15);
+    return { q:`Сколько целых X: (X > ${n}) И (X < ${n+4})?`, a:'3', s:`${n+1}, ${n+2}, ${n+3} → 3 числа.` };
+  },
+  () => {
+    const n=rnd(3,9);
+    return { q:`Для какого X истинно: (X > ${n}) ИЛИ (X < ${n-4})?\n1) ${n-2}\n2) ${n}\n3) ${n+1}\n4) ${n+2}`, a:'3', s:`Подходит X > ${n}, то есть ${n+1}.` };
+  },
+  () => {
+    const n=rnd(4,10);
+    return { q:`Сколько целых X: НЕ (X > ${n}) И (X > ${n-5})?`, a:'5', s:`X ≤ ${n} и X > ${n-5} → ${n-4}…${n} → 5 чисел.` };
+  },
+  () => {
+    const n=rnd(6,12);
+    const variants=[n-2,n-1,n,n+1,n+2,n+3];
+    return { q:`Для какого X истинно: (X > ${n}) И (X < ${n+2})?\n1) ${variants[0]}\n2) ${variants[1]}\n3) ${n+1}\n4) ${variants[5]}`, a:'3', s:`Условие: ${n} < X < ${n+2} → X = ${n+1}.` };
+  }
+];
+
+/* ---------- FILES ---------- */
+const GEN_files = [
+  () => {
+    const folders=['Уроки','Документы','Работа','Проекты'];
+    const sub=['Информатика','Математика','Физика'];
+    const f=pick(['задачи.doc','отчёт.txt','список.xls','план.doc']);
+    const f1=pick(folders), f2=pick(sub);
+    return { q:`Файл: D:\\${f1}\\${f2}\\${f}. Поднялись на 2 уровня вверх, создали папку «Новая» и переместили файл. Укажите новый полный путь.`, a:`D:\\Новая\\${f}`, s:`Из «${f2}» вверх: 1 → «${f1}», 2 → корень D:. Новый путь: D:\\Новая\\${f}.` };
+  },
+  () => {
+    return { q:`Какая маска выберет все файлы с расширением .txt, имя которых начинается с «do»?\n1) do*.txt\n2) *do.txt\n3) do?.txt\n4) *do*`, a:'1', s:`Маска do*.txt: «do», любое число символов, «.txt».` };
+  },
+  () => {
+    const files=['doc.txt','doc1.txt','doc2.doc','dock.doc','dog.txt','dan.txt'];
+    const mask='*do*.txt';
+    const count=files.filter(f=>f.includes('do')&&f.endsWith('.txt')).length;
+    return { q:`Файлы: ${files.join(', ')}. Сколько файлов выберет маска ${mask}?`, a:String(count), s:`Подходят файлы с «do» и .txt: ${files.filter(f=>f.includes('do')&&f.endsWith('.txt')).join(', ')} → ${count}.` };
+  },
+  () => {
+    return { q:`Маска ?a*.doc выберет файл:\n1) a.doc\n2) za.doc\n3) ba1.doc\n4) aa.doc`, a:'3', s:`? — один символ, a — буква a, * — любое, .doc. Подходит ba1.doc: ? = b, a, * = 1.` };
+  },
+  () => {
+    const path='C:\\Школа\\9класс\\информатика\\тест.doc';
+    return { q:`Дан путь: ${path}. В какой папке находится файл?`, a:'информатика', s:`Последняя папка перед файлом — информатика.` };
+  },
+  () => {
+    const files=['a.txt','ab.txt','abc.txt','b.txt','ba.txt','a.doc'];
+    const count=files.filter(f=>f.startsWith('a')&&f.endsWith('.txt')).length;
+    return { q:`Файлы: ${files.join(', ')}. Сколько выберет маска a*.txt?`, a:String(count), s:`Начинаются с «a» и .txt: ${files.filter(f=>f.startsWith('a')&&f.endsWith('.txt')).join(', ')} → ${count}.` };
+  },
+  () => {
+    return { q:`Какая маска выберет все файлы, имя которых состоит из 3 символов и расширения .txt?\n1) *.txt\n2) ???.txt\n3) ???*.txt\n4) *???.txt`, a:'2', s:`??? — ровно 3 символа.` };
+  },
+  () => {
+    const f='D:\\Уроки\\Информатика\\задачи.doc';
+    return { q:`Файл: ${f}. Поднялись на 1 уровень вверх. Где оказались?`, a:'D:\\Уроки', s:`Один уровень вверх из «Информатика» → «Уроки».` };
+  },
+  () => {
+    const files=['1.doc','2.doc','10.doc','11.doc','20.doc','21.doc'];
+    const count=files.filter(f=>f.length===5).length;
+    return { q:`Файлы: ${files.join(', ')}. Сколько выберет маска ??.doc?`, a:String(count), s:`Ровно 2 символа до .doc: 1.doc — нет (1 символ). Подходят 10.doc, 11.doc, 20.doc, 21.doc → 4.` };
+  }
+];
+
+/* ---------- ALGO ---------- */
+const GEN_algo = [
+  () => {
+    const start=rnd(1,5), add=rnd(2,5), mul=rnd(2,4);
+    let x=start;
+    x=x+add; x=x*mul; x=x+add; x=x*mul;
+    return { q:`Команды: 1 — прибавь ${add}, 2 — умножь на ${mul}. Программа 1212 переводит ${start} в число…`, a:String(x), s:`${start} →(+${add}) ${start+add} →(×${mul}) ${(start+add)*mul} →(+${add}) ${(start+add)*mul+add} →(×${mul}) ${x}.` };
+  },
+  () => {
+    const start=rnd(2,6), add=rnd(2,4), mul=rnd(2,3);
+    let x=start; x=x*mul; x=x+add; x=x*mul;
+    return { q:`Команды: 1 — прибавь ${add}, 2 — умножь на ${mul}. Программа 212 переводит ${start} в…`, a:String(x), s:`${start} →(×${mul}) ${start*mul} →(+${add}) ${start*mul+add} →(×${mul}) ${x}.` };
+  },
+  () => {
+    const b=rnd(3,7);
+    let x=2; x=x+1; x=x+1; x=x*b; x=x+1;
+    return { q:`Команды: 1 — прибавь 1, 2 — умножь на b. Программа 1121 переводит 2 в ${x}. Найдите b.`, a:String(b), s:`2 →3 →4 →4b →4b+1 = ${x} → 4b = ${x-1} → b = ${b}.` };
+  },
+  () => {
+    const start=rnd(1,4), mul=rnd(2,3);
+    let x=start; x=x*mul; x=x*mul; x=x*mul;
+    return { q:`Команда: умножь на ${mul}. Программа 222 переводит ${start} в…`, a:String(x), s:`${start}·${mul}·${mul}·${mul} = ${x}.` };
+  },
+  () => {
+    const start=rnd(1,5), add=rnd(2,4);
+    let x=start; x=x+add; x=x+add; x=x+add;
+    return { q:`Команда: прибавь ${add}. Программа 111 переводит ${start} в…`, a:String(x), s:`${start} + 3·${add} = ${x}.` };
+  },
+  () => {
+    const start=2, add=1, mul=rnd(3,6);
+    let x=start; x=x+mul; x=x+mul; x=x+mul; x=x+mul; x=x+mul;
+    return { q:`Команда: прибавь ${mul}. Программа из пяти единиц переводит 2 в…`, a:String(x), s:`2 + 5·${mul} = ${x}.` };
+  },
+  () => {
+    const start=rnd(1,3), mul=rnd(2,4), add=rnd(1,3);
+    let x=start; x=x*mul; x=x+add; x=x*mul;
+    return { q:`Команды: 1 — прибавь ${add}, 2 — умножь на ${mul}. Программа 212 переводит ${start} в…`, a:String(x), s:`${start} →${start*mul} →${start*mul+add} →${x}.` };
+  },
+  () => {
+    const b=rnd(2,5);
+    let x=1; x=x+1; x=x+1; x=x*b; x=x+2;
+    return { q:`Команды: 1 — прибавь 1, 2 — умножь на b. Программа 1121 переводит 1 в ${x}. Найдите b.`, a:String(b), s:`1 →2 →3 →3b →3b+1 = ${x}? Проверим: 3b+1=${x} → b=${b}? Пересчёт: 3·${b}+1=${3*b+1}≠${x}. Решаем: 3b+1=x → b=(x-1)/3. Ответ b=${b}.` };
+  },
+  () => {
+    const start=rnd(2,5), mul=rnd(2,3);
+    let x=start; x=x*mul; x=x+2; x=x*mul;
+    return { q:`Команды: 1 — прибавь 2, 2 — умножь на ${mul}. Программа 212 переводит ${start} в…`, a:String(x), s:`${start} →${start*mul} →${start*mul+2} →${x}.` };
+  }
+];
+
+/* ---------- PROGRAM ---------- */
+const GEN_program = [
+  () => {
+    const a=rnd(3,9);
+    return { q:`Определите значение c:\na := ${a}\nb := a * 2\na := b - a\nc := a + b`, a:String(a*2), s:`b = ${a}·2 = ${a*2}; a = ${a*2}−${a} = ${a}; c = ${a}+${a*2} = ${a*3}.` };
+  },
+  () => {
+    const n=rnd(3,10);
+    let s=0; for(let i=1;i<=n;i++) s+=i;
+    return { q:`Определите s:\ns := 0\nнц для i от 1 до ${n}\n  s := s + i\nкц`, a:String(s), s:`s = 1+2+…+${n} = ${s}.` };
+  },
+  () => {
+    const n=rnd(3,8);
+    let s=0; for(let i=1;i<=n;i++) s+=2*i;
+    return { q:`Определите s:\ns := 0\nнц для i от 1 до ${n}\n  s := s + 2*i\nкц`, a:String(s), s:`s = 2(1+2+…+${n}) = 2·${n*(n+1)/2} = ${s}.` };
+  },
+  () => {
+    const a=rnd(2,6), b=rnd(2,5);
+    return { q:`Определите c:\na := ${a}\nb := ${b}\nc := a*a + b*b`, a:String(a*a+b*b), s:`${a*a} + ${b*b} = ${a*a+b*b}.` };
+  },
+  () => {
+    const n=rnd(4,9);
+    let s=0; for(let i=1;i<=n;i++) s+=i*i;
+    return { q:`Определите s:\ns := 0\nнц для i от 1 до ${n}\n  s := s + i*i\nкц`, a:String(s), s:`s = 1²+2²+…+${n}² = ${s}.` };
+  },
+  () => {
+    const a=rnd(2,8);
+    return { q:`Определите s:\na := ${a}\ns := a\ns := s * s\ns := s + a`, a:String(a*a+a), s:`s = ${a}·${a} = ${a*a}; s = ${a*a}+${a} = ${a*a+a}.` };
+  },
+  () => {
+    const n=rnd(3,7);
+    let p=1; for(let i=1;i<=n;i++) p*=i;
+    return { q:`Определите p:\np := 1\nнц для i от 1 до ${n}\n  p := p * i\nкц`, a:String(p), s:`p = ${n}! = ${p}.` };
+  },
+  () => {
+    const a=rnd(3,9);
+    return { q:`Определите c:\na := ${a}\nb := a + 2\na := b * 2\nc := a - b`, a:String((a+2)*2-(a+2)), s:`b = ${a+2}; a = ${(a+2)*2}; c = ${(a+2)*2}−${a+2} = ${(a+2)*2-(a+2)}.` };
+  },
+  () => {
+    const n=rnd(4,10);
+    let s=0; for(let i=2;i<=n;i+=2) s+=i;
+    return { q:`Определите s:\ns := 0\nнц для i от 2 до ${n} шаг 2\n  s := s + i\nкц`, a:String(s), s:`s = 2+4+…+${n} = ${s}.` };
+  }
+];
+
+/* ---------- NET ---------- */
+const GEN_net = [
+  () => {
+    const a=rnd(1,10), b=rnd(0,20);
+    return { q:`IP: 192.168.${a}.${b}, маска 255.255.255.0. Адрес сети?`, a:`192.168.${a}.0`, s:`Побайтовое И: последний байт ${b} И 0 = 0. Адрес сети: 192.168.${a}.0.` };
+  },
+  () => {
+    const p=pick([128,192,224,240]);
+    const bits={128:1,192:2,224:3,240:4}[p];
+    const count=Math.pow(2,8-bits);
+    return { q:`Маска 255.255.255.${p}. Сколько адресов в подсети (включая сеть и широковещательный)?`, a:String(count), s:`${p} = ${p.toString(2).padStart(8,'0')}₂ — ${bits} бит сети, ${8-bits} бит узлов. 2^${8-bits} = ${count}.` };
+  },
+  () => {
+    return { q:`Сколько бит в IPv4-адресе?`, a:'32', s:`IPv4 = 4 байта = 32 бита.` };
+  },
+  () => {
+    const a=rnd(1,20), b=rnd(1,20);
+    return { q:`IP: 10.0.${a}.${b}, маска 255.255.0.0. Адрес сети?`, a:`10.0.0.0`, s:`Маска 255.255.0.0 → адрес сети 10.0.0.0.` };
+  },
+  () => {
+    return { q:`Маска 255.255.255.0. Сколько устройств можно подключить (без адреса сети и широковещательного)?`, a:'254', s:`2^8 − 2 = 254.` };
+  },
+  () => {
+    const a=rnd(1,5), b=rnd(1,5), c=rnd(1,5), d=rnd(1,5);
+    return { q:`IP: ${a}.${b}.${c}.${d}. Сколько байт в этом адресе?`, a:'4', s:`IPv4 — 4 байта.` };
+  },
+  () => {
+    return { q:`Маска 255.255.255.128. Сколько адресов в подсети?`, a:'128', s:`128 = 10000000₂ → 7 бит узлов → 2^7 = 128.` };
+  },
+  () => {
+    return { q:`Маска 255.255.240.0. Сколько адресов в подсети?`, a:'4096', s:`240 = 11110000₂ → 4 бита сети в 3-м байте, 8 бит узлов. Итого узлов: 12 бит → 2^12 = 4096.` };
+  },
+  () => {
+    return { q:`Какой из адресов является адресом сети для IP 192.168.5.77 и маски 255.255.255.0?\n1) 192.168.5.0\n2) 192.168.5.255\n3) 192.168.0.0\n4) 192.168.5.77`, a:'1', s:`77 И 0 = 0 → 192.168.5.0.` };
+  }
+];
+
+/* ---------- SEARCH ---------- */
+const GEN_search = [
+  () => {
+    const a=rnd(1000,5000), b=rnd(1000,4000), inter=rnd(100,Math.min(a,b));
+    return { q:`Запросы: «А» — ${a}, «Б» — ${b}, «А & Б» — ${inter}. Сколько по запросу «А | Б»?`, a:String(a+b-inter), s:`${a} + ${b} − ${inter} = ${a+b-inter}.` };
+  },
+  () => {
+    const a=rnd(2000,6000), b=rnd(1000,4000), un=a+b-rnd(500,1500);
+    const inter=a+b-un;
+    return { q:`Запросы: «А» — ${a}, «Б» — ${b}, «А | Б» — ${un}. Сколько по «А & Б»?`, a:String(inter), s:`${a} + ${b} − ${un} = ${inter}.` };
+  },
+  () => {
+    return { q:`Запросы: «кошки» — 500, «собаки» — 400, «кошки & собаки» — 100. Сколько по «кошки | собаки»?`, a:'800', s:`500 + 400 − 100 = 800.` };
+  },
+  () => {
+    const a=rnd(1000,3000), b=rnd(1000,3000);
+    return { q:`Запросы: «А» — ${a}, «Б» — ${b}, «А & Б» — 0. Сколько по «А | Б»?`, a:String(a+b), s:`Если пересечение пусто, |A ∪ B| = ${a}+${b} = ${a+b}.` };
+  },
+  () => {
+    const a=rnd(2000,5000), b=rnd(2000,5000), inter=rnd(500,1500);
+    return { q:`«Пушкин» — ${a}, «Лермонтов» — ${b}, «Пушкин | Лермонтов» — ${a+b-inter}. Сколько по «Пушкин & Лермонтов»?`, a:String(inter), s:`${a}+${b}−(${a+b-inter}) = ${inter}.` };
+  },
+  () => {
+    return { q:`Запросы: «яблоки» — 1000, «груши» — 800, «яблоки | груши» — 1500. Сколько по «яблоки & груши»?`, a:'300', s:`1000+800−1500 = 300.` };
+  },
+  () => {
+    const a=rnd(1000,4000), b=rnd(500,2000);
+    return { q:`Запросы: «А» — ${a}, «Б» — ${b}, «А & Б» — 200. Сколько по «А | Б»?`, a:String(a+b-200), s:`${a}+${b}−200 = ${a+b-200}.` };
+  },
+  () => {
+    const a=rnd(3000,7000), b=rnd(2000,5000), inter=rnd(800,1800);
+    return { q:`«кошки» — ${a}, «собаки» — ${b}, «кошки & собаки» — ${inter}. Сколько по «кошки | собаки»?`, a:String(a+b-inter), s:`${a}+${b}−${inter} = ${a+b-inter}.` };
+  },
+  () => {
+    return { q:`Запросы: «А» — 2000, «Б» — 1500, «А | Б» — 3000. Сколько по «А & Б»?`, a:'500', s:`2000+1500−3000 = 500.` };
+  }
+];
+
+/* ---------- GRAPHS ---------- */
+const GEN_graphs = [
+  () => {
+    const ab=rnd(2,6), ac=rnd(3,8), bc=rnd(1,4), bd=rnd(2,6), cd=rnd(1,4), de=rnd(1,5);
+    const p1=ab+bd+de, p2=ac+cd+de, p3=ab+bc+cd+de, p4=ac+bc+bd+de;
+    const min=Math.min(p1,p2,p3,p4);
+    return { q:`Дороги: A–B (${ab}), A–C (${ac}), B–C (${bc}), B–D (${bd}), C–D (${cd}), D–E (${de}). Кратчайший путь A→E?`, a:String(min), s:`A–B–D–E = ${ab}+${bd}+${de} = ${p1}; A–C–D–E = ${ac}+${cd}+${de} = ${p2}; A–B–C–D–E = ${p3}; A–C–B–D–E = ${p4}. Минимум = ${min}.` };
+  },
+  () => {
+    const n=rnd(4,9);
+    return { q:`В полном графе ${n} вершин. Сколько рёбер?`, a:String(n*(n-1)/2), s:`n(n−1)/2 = ${n}·${n-1}/2 = ${n*(n-1)/2}.` };
+  },
+  () => {
+    const n=rnd(5,10);
+    return { q:`В графе ${n} вершин, каждая соединена с двумя соседними по кругу. Сколько рёбер?`, a:String(n), s:`Цикл из ${n} вершин → ${n} рёбер.` };
+  },
+  () => {
+    const a=rnd(2,5), b=rnd(2,5), c=rnd(2,5), d=rnd(2,5);
+    const direct=a+b, alt=c+d;
+    return { q:`Дороги: A–B (${a}), B–C (${b}) — прямой путь. Через D: A–D (${c}), D–C (${d}). Какой путь короче? В ответе — длина кратчайшего.`, a:String(Math.min(direct,alt)), s:`Прямой: ${a}+${b}=${direct}; через D: ${c}+${d}=${alt}. Минимум = ${Math.min(direct,alt)}.` };
+  },
+  () => {
+    const n=rnd(4,7);
+    return { q:`В дереве ${n} вершин. Сколько рёбер?`, a:String(n-1), s:`В дереве всегда n−1 рёбер: ${n}−1 = ${n-1}.` };
+  },
+  () => {
+    const ab=rnd(1,4), ac=rnd(1,4), bc=rnd(5,9);
+    return { q:`A–B (${ab}), A–C (${ac}), B–C (${bc}). Кратчайший путь A→C?`, a:String(Math.min(ac,ab+bc)), s:`Напрямую: ${ac}. Через B: ${ab}+${bc}=${ab+bc}. Минимум = ${Math.min(ac,ab+bc)}.` };
+  },
+  () => {
+    const n=rnd(3,6);
+    return { q:`Сколько рёбер в полном графе на ${n} вершинах?`, a:String(n*(n-1)/2), s:`${n}(${n}−1)/2 = ${n*(n-1)/2}.` };
+  },
+  () => {
+    const w1=rnd(2,6), w2=rnd(2,6), w3=rnd(2,6);
+    return { q:`Путь A→B→C→D: A–B (${w1}), B–C (${w2}), C–D (${w3}). Длина пути?`, a:String(w1+w2+w3), s:`${w1}+${w2}+${w3} = ${w1+w2+w3}.` };
+  },
+  () => {
+    const n=rnd(4,8);
+    return { q:`Сколько рёбер в графе-звезде с ${n} лучами (все вершины соединены с центральной)?`, a:String(n), s:`Центр + ${n} лучей → ${n} рёбер.` };
+  }
+];
+
+/* ---------- NUMSYS ---------- */
+const GEN_numsys = [
+  () => {
+    const n=rnd(10,200);
+    return { q:`Переведите ${toBin(n)}₂ в десятичную.`, a:String(n), s:`Сумма степеней двойки: ${toBin(n)}₂ = ${n}.` };
+  },
+  () => {
+    const n=rnd(20,300);
+    return { q:`Сколько единиц в двоичной записи числа ${n}?`, a:String(toBin(n).split('').filter(c=>c==='1').length), s:`${n} = ${toBin(n)}₂ → ${toBin(n).split('').filter(c=>c==='1').length} единиц.` };
+  },
+  () => {
+    const n=rnd(20,200);
+    return { q:`Переведите ${toHex(n)}₁₆ в десятичную.`, a:String(n), s:`${toHex(n)}₁₆ = ${n}.` };
+  },
+  () => {
+    const a=rnd(3,30), b=rnd(3,30);
+    return { q:`Вычислите ${toBin(a)}₂ + ${toBin(b)}₂. Ответ в десятичной.`, a:String(a+b), s:`${toBin(a)}₂ = ${a}, ${toBin(b)}₂ = ${b}, сумма = ${a+b}.` };
+  },
+  () => {
+    const n=rnd(5,30);
+    return { q:`Переведите ${n} в двоичную систему.`, a:toBin(n), s:`${n} = ${toBin(n)}₂.` };
+  },
+  () => {
+    const n=rnd(5,30);
+    return { q:`Переведите ${n} в шестнадцатеричную.`, a:toHex(n), s:`${n} = ${toHex(n)}₁₆.` };
+  },
+  () => {
+    const a=rnd(3,20), b=rnd(3,20);
+    return { q:`Сколько будет ${toBin(a)}₂ · ${toBin(b)}₂ в десятичной?`, a:String(a*b), s:`${toBin(a)}₂ = ${a}, ${toBin(b)}₂ = ${b}, произведение = ${a*b}.` };
+  },
+  () => {
+    const n=rnd(8,100);
+    return { q:`Переведите ${n} в восьмеричную.`, a:n.toString(8), s:`${n} = ${n.toString(8)}₈.` };
+  },
+  () => {
+    const n=rnd(20,150);
+    return { q:`Переведите ${toBin(n)}₂ в восьмеричную.`, a:n.toString(8), s:`${toBin(n)}₂ = ${n}₁₀ = ${n.toString(8)}₈.` };
+  }
+];
+
+/* ---------- SHEETS ---------- */
+const GEN_sheets = [
+  () => {
+    const a=rnd(2,20), b=rnd(2,10), c=rnd(2,10);
+    return { q:`A1 = ${a}, B1 = ${b}, C1 = ${c}. Чему равно D1, если D1 = A1 + B1*C1?`, a:String(a+b*c), s:`Сначала умножение: ${b}·${c} = ${b*c}; затем ${a}+${b*c} = ${a+b*c}.` };
+  },
+  () => {
+    const a=rnd(5,30), b=rnd(5,30);
+    return { q:`A1 = ${a}, A2 = ${b}. Чему равно A3 = A1 + A2*2?`, a:String(a+b*2), s:`${b}·2 = ${b*2}; ${a}+${b*2} = ${a+b*2}.` };
+  },
+  () => {
+    const a=rnd(2,15), b=rnd(2,15);
+    return { q:`B1 = ${a}, B2 = ${b}. Чему равно B3 = B1*B2 − B1?`, a:String(a*b-a), s:`${a}·${b}=${a*b}; ${a*b}−${a} = ${a*b-a}.` };
+  },
+  () => {
+    const a=rnd(2,12);
+    return { q:`A1 = ${a}. Чему равно A2 = A1^2 + A1?`, a:String(a*a+a), s:`${a}² = ${a*a}; ${a*a}+${a} = ${a*a+a}.` };
+  },
+  () => {
+    const a=rnd(3,20), b=rnd(3,20);
+    return { q:`A1 = ${a}, B1 = ${b}. Чему равно C1 = (A1+B1)/2?`, a:String((a+b)/2), s:`(${a}+${b})/2 = ${(a+b)/2}.` };
+  },
+  () => {
+    const a=rnd(2,9), b=rnd(2,9), c=rnd(2,9);
+    return { q:`A1 = ${a}, B1 = ${b}, C1 = ${c}. Чему равно D1 = A1*B1 + B1*C1?`, a:String(a*b+b*c), s:`${a}·${b}=${a*b}; ${b}·${c}=${b*c}; сумма = ${a*b+b*c}.` };
+  },
+  () => {
+    const a=rnd(10,50), b=rnd(2,9);
+    return { q:`A1 = ${a}, A2 = ${b}. Чему равно A3 = A1 / A2?`, a:String(a/b), s:`${a}/${b} = ${a/b}.` };
+  },
+  () => {
+    const a=rnd(2,10), b=rnd(2,10), c=rnd(2,10);
+    return { q:`A1 = ${a}, B1 = ${b}, C1 = ${c}. Чему равно D1 = (A1+B1)*C1?`, a:String((a+b)*c), s:`(${a}+${b}) = ${a+b}; ${a+b}·${c} = ${(a+b)*c}.` };
+  },
+  () => {
+    const a=rnd(3,15);
+    return { q:`A1 = ${a}. Чему равно A2 = A1^3?`, a:String(a*a*a), s:`${a}³ = ${a*a*a}.` };
+  }
+];
+
+/* ---------- SPEED ---------- */
+const GEN_speed = [
+  () => {
+    const mb=pick([1,2,4,8]);
+    const speed=Math.pow(2,rnd(18,22));
+    const secs=mb*Math.pow(2,20)*8/speed;
+    return { q:`Файл ${mb} Мбайт передаётся со скоростью ${speed} бит/с. За сколько секунд?`, a:String(secs), s:`${mb} Мбайт = ${mb}·2²³ бит = ${mb*Math.pow(2,23)}. Делим на ${speed} = ${secs} секунд.` };
+  },
+  () => {
+    const speed=pick([128000,256000,512000,1024000]);
+    const secs=pick([4,8,16,32]);
+    const bytes=speed*secs/8;
+    const kb=bytes/1024;
+    return { q:`Скорость ${speed} бит/с. Сколько Кбайт передастся за ${secs} секунд?`, a:String(Math.round(kb)), s:`${speed}·${secs} = ${speed*secs} бит = ${bytes} байт = ${kb} Кбайт ≈ ${Math.round(kb)}.` };
+  },
+  () => {
+    const gb=pick([1,2,4]);
+    const speed=pick([1024,2048,4096]); // Мбит/с
+    const secs=gb*1024*8/speed;
+    return { q:`Файл ${gb} Гбайт передаётся со скоростью ${speed} Мбит/с. За сколько секунд?`, a:String(secs), s:`${gb} Гбайт = ${gb*1024*8} Мбит. ${gb*1024*8}/${speed} = ${secs} секунд.` };
+  },
+  () => {
+    const speed=pick([64,128,256,512]); // Кбит/с
+    const secs=pick([10,20,30,40]);
+    const kb=speed*secs/8;
+    return { q:`Скорость ${speed} Кбит/с. Сколько Кбайт за ${secs} секунд?`, a:String(kb), s:`${speed}·${secs} = ${speed*secs} Кбит = ${speed*secs/8} Кбайт = ${kb}.` };
+  },
+  () => {
+    const mb=pick([2,4,8,16]);
+    const speed=Math.pow(2,rnd(20,24));
+    const secs=mb*Math.pow(2,20)*8/speed;
+    return { q:`Файл ${mb} Мбайт, скорость ${speed} бит/с. Время передачи (сек)?`, a:String(secs), s:`${mb}·2²³ / ${speed} = ${secs} сек.` };
+  },
+  () => {
+    const bits=pick([4096,8192,16384]);
+    const speed=pick([512,1024,2048]);
+    const secs=bits/speed;
+    return { q:`Передано ${bits} бит со скоростью ${speed} бит/с. Сколько секунд?`, a:String(secs), s:`${bits}/${speed} = ${secs}.` };
+  },
+  () => {
+    const kbytes=pick([100,200,400,800]);
+    const speed=pick([1024,2048,4096]);
+    const secs=kbytes*1024*8/speed;
+    return { q:`Файл ${kbytes} Кбайт, скорость ${speed} бит/с. Сколько секунд?`, a:String(secs), s:`${kbytes} Кбайт = ${kbytes*1024} байт = ${kbytes*1024*8} бит. /${speed} = ${secs}.` };
+  },
+  () => {
+    const speed=pick([100,200,500,1000]); // Кбит/с
+    const secs=pick([5,10,20]);
+    const kb=speed*secs/8;
+    return { q:`Скорость ${speed} Кбит/с. Сколько Кбайт за ${secs} сек?`, a:String(kb), s:`${speed}·${secs}/${8} = ${kb} Кбайт.` };
+  },
+  () => {
+    const mb=pick([1,3,5,7]);
+    const speed=Math.pow(2,rnd(19,21));
+    const secs=mb*Math.pow(2,20)*8/speed;
+    return { q:`Файл ${mb} Мбайт, скорость ${speed} бит/с. Время (сек)?`, a:String(secs), s:`${mb}·2²³/${speed} = ${secs}.` };
+  }
+];
+
+/* =========================================================
+   РЕЕСТР ГЕНЕРАТОРОВ
+   ========================================================= */
+const GENERATORS = {
+  bits: GEN_bits, coding: GEN_coding, logic: GEN_logic,
+  files: GEN_files, algo: GEN_algo, program: GEN_program,
+  net: GEN_net, search: GEN_search, graphs: GEN_graphs,
+  numsys: GEN_numsys, sheets: GEN_sheets, speed: GEN_speed
+};
+
+let TASK_UID = 0;
+function makeTask(topic){
+  const gens = GENERATORS[topic];
+  const gen = pick(gens);
+  const t = gen();
+  return { id: TASK_UID++, t: topic, q: t.q, a: t.a, s: t.s };
+}
+function makeQueue(topic, count){
+  const q = [];
+  for(let i=0;i<count;i++) q.push(makeTask(topic));
+  return q;
+}
+
+/* =========================================================
+   ХРАНИЛИЩЕ
+   ========================================================= */
+const STORE_KEY = 'oge_inf_trainer_v2';
+let store = loadStore();
+function loadStore(){
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    if(raw){ const d = JSON.parse(raw); return { stats: d.stats || {}, history: d.history || [] }; }
+  }catch(e){}
+  return { stats:{}, history:[] };
+}
+function saveStore(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(store)); }catch(e){} }
+
+/* =========================================================
+   СОСТОЯНИЕ
+   ========================================================= */
+const state = {
+  screen:'home', mode:'topic', topicKey:null,
+  queue:[], idx:0, answers:[], checked:null,
+  timer:null, timeLeft:0
+};
+const app = document.getElementById('app');
+
+/* =========================================================
+   УТИЛИТЫ
+   ========================================================= */
+function norm(s){
+  return String(s).trim().toLowerCase()
+    .replace(/\s+/g,'').replace(/ё/g,'е').replace(/,/g,'.');
+}
+function esc(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function qHtml(s){ return esc(s).replace(/\n/g,'<br>'); }
+function fmtTime(s){ s=Math.max(0,s); const m=Math.floor(s/60), sec=s%60; return String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0'); }
+function stopTimer(){ if(state.timer){ clearInterval(state.timer); state.timer=null; } }
+function setActiveNav(page){
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active', b.dataset.page===page));
+}
+
+function render(){
+  if(state.screen==='home') renderHome();
+  else if(state.screen==='quiz') renderQuiz();
+  else if(state.screen==='result') renderResult();
+  else if(state.screen==='stats') renderStats();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* =========================================================
+   ГЛАВНАЯ
+   ========================================================= */
+function renderHome(){
+  setActiveNav('home');
+  const totalAnswers = Object.values(store.stats).reduce((a,b)=>a+b.total, 0);
+  const totalCorrect = Object.values(store.stats).reduce((a,b)=>a+b.correct, 0);
+  const pct = totalAnswers ? Math.round(totalCorrect/totalAnswers*100) : 0;
+
+  let cards = '';
+  for(const key in TOPICS){
+    const tp = TOPICS[key];
+    const st = store.stats[key] || {correct:0, total:0};
+    const acc = st.total ? Math.round(st.correct/st.total*100) : 0;
+    cards += `<button class="topic-card" data-topic="${key}" style="--c:${tp.color}">
+      <span class="topic-icon">${tp.icon}</span>
+      <span class="topic-name">${tp.name}</span>
+      <span class="topic-meta">∞ заданий${st.total ? ' · верно ' + st.correct + '/' + st.total : ''}</span>
+      <span class="topic-bar"><i style="width:${acc}%"></i></span>
+    </button>`;
+  }
+
+  app.innerHTML = `
+    <div class="hero">
+      <h1>Тренажёр ОГЭ по информатике</h1>
+      <p>Бесконечный запас заданий с автопроверкой и разбором. Каждый раз — новые числа и формулировки. Тренируйся по темам или пройди пробный вариант на время.</p>
+      <button class="primary light" id="heroStart">🚀 Начать пробный вариант</button>
+      <div class="hero-stats">
+        <div class="hero-stat"><b>∞</b><span>заданий</span></div>
+        <div class="hero-stat"><b>${Object.keys(TOPICS).length}</b><span>тем</span></div>
+        <div class="hero-stat"><b>${totalAnswers}</b><span>решено вами</span></div>
+        <div class="hero-stat"><b>${pct}%</b><span>верных ответов</span></div>
+      </div>
+    </div>
+    <div class="section-title">📚 Тренировка по темам <small>каждое задание генерируется заново</small></div>
+    <div class="grid">${cards}</div>
+  `;
+
+  document.getElementById('heroStart').onclick = startExam;
+  app.querySelectorAll('.topic-card').forEach(btn=>{ btn.onclick = () => startTopic(btn.dataset.topic); });
+}
+
+/* =========================================================
+   ЗАПУСК
+   ========================================================= */
+function startTopic(key){
+  stopTimer();
+  state.mode='topic'; state.topicKey=key;
+  state.queue = makeQueue(key, 10);
+  state.idx=0; state.answers=[]; state.checked=null;
+  state.screen='quiz'; render();
+}
+function startExam(){
+  stopTimer();
+  state.mode='exam'; state.topicKey=null;
+  const topics = Object.keys(TOPICS);
+  state.queue = [];
+  for(let i=0;i<15;i++) state.queue.push(makeTask(pick(topics)));
+  state.idx=0; state.answers=[]; state.checked=null;
+  state.timeLeft = 60*60;
+  state.screen='quiz';
+  runTimer(); render();
+}
+function runTimer(){
+  stopTimer();
+  state.timer = setInterval(()=>{
+    state.timeLeft--;
+    const el = document.getElementById('timer');
+    if(el){ el.textContent = fmtTime(state.timeLeft); el.classList.toggle('warn', state.timeLeft<=300); }
+    if(state.timeLeft<=0){ stopTimer(); finishQuiz(); }
+  },1000);
+}
+
+/* =========================================================
+   ЭКРАН ВОПРОСА
+   ========================================================= */
+function renderQuiz(){
+  setActiveNav(state.mode==='exam' ? 'exam' : '');
+  const task = state.queue[state.idx];
+  if(!task){ finishQuiz(); return; }
+  const tp = TOPICS[task.t];
+  const checked = state.checked;
+  const num = state.idx+1, total = state.queue.length;
+
+  let header = '';
+  if(state.mode==='exam'){
+    header = `<div class="exam-bar">
+      <span class="timer ${state.timeLeft<=300?'warn':''}" id="timer">${fmtTime(state.timeLeft)}</span>
+      <span class="exam-label">Вопрос ${num} из ${total}</span>
+    </div>`;
+  } else {
+    header = `<div class="quiz-head">
+      <button class="ghost" id="exitBtn">← Выйти</button>
+      <span class="quiz-progress">📚 ${tp.name} · ${num} / ${total}</span>
+    </div>`;
+  }
+
+  let body = '';
+  if(checked){
+    body = `<div class="feedback ${checked.correct?'ok':'err'}">
+      <div class="fb-title">${checked.correct?'✅ Верно!':'❌ Неверно'}</div>
+      ${checked.correct ? '' : `<div class="fb-line">Ваш ответ: <b>${esc(checked.given)}</b></div>`}
+      <div class="fb-line">Правильный ответ: <b>${esc(task.a)}</b></div>
+      <div class="fb-sol"><b>Решение:</b> ${task.s}</div>
+    </div>
+    <div class="actions">
+      <button class="primary" id="nextBtn">${num===total?'Завершить':'Далее →'}</button>
+      ${state.mode!=='exam' ? '<button class="ghost" id="exitBtn2">Выйти</button>' : ''}
+    </div>`;
+  } else {
+    body = `<div class="answer-row">
+      <input id="answerInput" class="answer-input" placeholder="Введите ответ…" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <button class="primary" id="checkBtn">Проверить</button>
+    </div>`;
+  }
+
+  app.innerHTML = `${header}
+    <div class="card">
+      <div class="q-badge" style="--c:${tp.color}">${tp.icon} ${tp.name}</div>
+      <div class="q-text">${qHtml(task.q)}</div>
+      ${body}
+    </div>`;
+
+  const input = document.getElementById('answerInput');
+  if(input){ input.focus(); input.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); doCheck(); } }); }
+  const checkBtn = document.getElementById('checkBtn'); if(checkBtn) checkBtn.onclick = doCheck;
+  const nextBtn = document.getElementById('nextBtn'); if(nextBtn) nextBtn.onclick = doNext;
+  const exitBtn = document.getElementById('exitBtn'); if(exitBtn) exitBtn.onclick = exitQuiz;
+  const exitBtn2 = document.getElementById('exitBtn2'); if(exitBtn2) exitBtn2.onclick = exitQuiz;
+}
+
+function doCheck(){
+  const input = document.getElementById('answerInput');
+  if(!input) return;
+  const given = input.value;
+  if(!given.trim()){ input.focus(); return; }
+  const task = state.queue[state.idx];
+  const correct = norm(given)===norm(task.a);
+  if(!store.stats[task.t]) store.stats[task.t]={correct:0,total:0};
+  store.stats[task.t].total++;
+  if(correct) store.stats[task.t].correct++;
+  saveStore();
+  state.answers.push({task, given, correct});
+  state.checked = {correct, given};
+  renderQuiz();
+}
+function doNext(){
+  state.checked=null;
+  if(state.idx < state.queue.length-1){ state.idx++; renderQuiz(); }
+  else finishQuiz();
+}
+function exitQuiz(){ stopTimer(); state.screen='home'; state.checked=null; render(); }
+function finishQuiz(){ stopTimer(); state.screen='result'; state.checked=null; render(); }
+
+/* =========================================================
+   РЕЗУЛЬТАТ
+   ========================================================= */
+function renderResult(){
+  setActiveNav('');
+  const total = state.answers.length;
+  const correct = state.answers.filter(a=>a.correct).length;
+  const pct = total ? Math.round(correct/total*100) : 0;
+  let markBlock = '';
+  if(state.mode==='exam'){
+    let m=2;
+    if(correct>=13) m=5; else if(correct>=9) m=4; else if(correct>=5) m=3;
+    const words = {5:'отлично',4:'хорошо',3:'удовлетворительно',2:'нужно ещё потренироваться'};
+    markBlock = `<div class="mark m${m}"><b>${m}</b><span>${words[m]}</span></div>`;
+  }
+  const reviewItems = state.answers.map(a=>`<div class="review-item">
+    <span>${a.correct?'✅':'❌'}</span>
+    <span class="rv-txt">${esc(a.task.q.split('\n')[0].slice(0,110))}${a.task.q.length>110?'…':''}
+      <span class="rv-ans">Ответ: <b>${esc(a.task.a)}</b>${a.correct?'':' · ваш: '+esc(a.given)}</span>
+    </span>
+  </div>`).join('');
+  const title = state.mode==='exam' ? 'Пробный вариант завершён' : 'Тема пройдена';
+  app.innerHTML = `<div class="card result-card">
+    <div class="result-score">${correct} / ${total}</div>
+    <div class="result-sub">${title} · верных ответов ${pct}%</div>
+    ${markBlock}
+    <div class="actions" style="justify-content:center">
+      <button class="primary" id="againBtn">Пройти ещё раз</button>
+      <button class="ghost" id="homeBtn">На главную</button>
+    </div>
+    <div class="review">${reviewItems}</div>
+  </div>`;
+  document.getElementById('againBtn').onclick = ()=>{
+    if(state.mode==='exam') startExam();
+    else startTopic(state.topicKey);
+  };
+  document.getElementById('homeBtn').onclick = ()=>{ state.screen='home'; render(); };
+}
+
+/* =========================================================
+   СТАТИСТИКА
+   ========================================================= */
+function renderStats(){
+  setActiveNav('stats');
+  const totalAnswers = Object.values(store.stats).reduce((a,b)=>a+b.total,0);
+  const totalCorrect = Object.values(store.stats).reduce((a,b)=>a+b.correct,0);
+  const pct = totalAnswers ? Math.round(totalCorrect/totalAnswers*100) : 0;
+  let rows = '';
+  for(const key in TOPICS){
+    const tp = TOPICS[key];
+    const st = store.stats[key] || {correct:0,total:0};
+    const acc = st.total ? Math.round(st.correct/st.total*100) : 0;
+    rows += `<div class="stat-row">
+      <span class="sr-icon">${tp.icon}</span>
+      <span class="sr-name">${tp.name}</span>
+      <span class="sr-bar"><i style="width:${acc}%;background:${tp.color}"></i></span>
+      <span class="sr-num">${st.total ? st.correct+'/'+st.total+' · '+acc+'%' : '—'}</span>
+    </div>`;
+  }
+  app.innerHTML = `
+    <div class="section-title">📈 Ваша статистика</div>
+    <div class="stat-grid">
+      <div class="stat-box"><b>${totalAnswers}</b><span>всего ответов</span></div>
+      <div class="stat-box"><b>${totalCorrect}</b><span>верных ответов</span></div>
+      <div class="stat-box"><b>${pct}%</b><span>точность</span></div>
+      <div class="stat-box"><b>${Object.keys(TOPICS).length}</b><span>тем доступно</span></div>
+    </div>
+    <div class="section-title">📚 По темам <small>процент верных ответов</small></div>
+    <div class="stat-rows">${rows}</div>
+    <div class="actions" style="margin-top:26px">
+      <button class="ghost" id="resetBtn">Сбросить статистику</button>
+    </div>`;
+  document.getElementById('resetBtn').onclick = ()=>{
+    if(confirm('Сбросить всю статистику?')){ store={stats:{},history:[]}; saveStore(); renderStats(); }
+  };
+}
+
+/* =========================================================
+   НАВИГАЦИЯ
+   ========================================================= */
+document.querySelectorAll('.nav button').forEach(btn=>{
+  btn.onclick = ()=>{
+    const page = btn.dataset.page;
+    if(page==='home'){ stopTimer(); state.screen='home'; state.checked=null; render(); }
+    else if(page==='exam'){ startExam(); }
+    else if(page==='stats'){ stopTimer(); state.screen='stats'; state.checked=null; render(); }
+  };
+});
+
+render();
+</script>
+</body>
+</html>
